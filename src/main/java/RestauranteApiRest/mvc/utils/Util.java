@@ -1,5 +1,11 @@
 package RestauranteApiRest.mvc.utils;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -46,6 +52,26 @@ public class Util {
             return true;
         }
         return false;
+    }
+
+    public List<Map<String, String>> getResultDados(JdbcTemplate jtm, String sql){
+        List<Map<String, String>> rows = new ArrayList<>();
+        ResultSet resultSet = null;
+        try {
+            resultSet = jtm.getDataSource().getConnection().prepareStatement(sql).executeQuery();
+            int qtdColumns = resultSet.getMetaData().getColumnCount();
+
+            while(resultSet.next()) {
+                Map<String, String> cols = new HashMap<>();
+                for(int col = 1; col <= qtdColumns; col++) {
+                    cols.put(resultSet.getMetaData().getColumnLabel(col), resultSet.getString(col));
+                }
+                rows.add(cols);
+            }
+        } catch (SQLException e) {
+            return (List<Map<String, String>>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao extrair dados do banco!" + e.getMessage());
+        }
+        return rows;
     }
 
     public boolean validaSeDatasSaoIguais(LocalDate localDateBanco, LocalDate localDateDaVotacaoAtual) {

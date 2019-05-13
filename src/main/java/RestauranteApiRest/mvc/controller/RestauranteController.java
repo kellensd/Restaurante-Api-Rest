@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class RestauranteController {
@@ -24,6 +25,12 @@ public class RestauranteController {
     @RequestMapping(value = "/restaurantes/{id}", method = RequestMethod.GET)
     public Restaurante findById(@PathVariable Long id) {
         return restauranteService.findById(id);
+    }
+
+    @ApiOperation(value = "Consulta os restaurantes mais votados.")
+    @RequestMapping(value = "/restaurantes/maisVotados", method = RequestMethod.GET)
+    public List<Map<String, String>> listMaisVotados() {
+        return restauranteService.findMaisVotados();
     }
 
     @ApiOperation(value = "Votar em um restaurante informando nome do mesmo, nome do profissional e descrição.")

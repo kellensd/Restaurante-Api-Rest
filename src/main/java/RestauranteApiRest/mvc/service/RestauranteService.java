@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RestauranteService implements IRestauranteService  {
@@ -34,6 +35,12 @@ public class RestauranteService implements IRestauranteService  {
         Restaurante restaurante = (Restaurante) jtm.queryForObject(sql, new Object[]{id},
                 new BeanPropertyRowMapper(Restaurante.class));
         return restaurante;
+    }
+
+    @Override
+    public List<Map<String, String>> findMaisVotados() {
+        String sql = "SELECT nomeRestaurante as restaurante, count(voto) as votos FROM RESTAURANTE group by nomeRestaurante";
+        return util.getResultDados(jtm, sql);
     }
 
     @Override
