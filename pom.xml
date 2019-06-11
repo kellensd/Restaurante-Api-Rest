@@ -9,10 +9,10 @@
 		<version>2.1.4.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.dbserver</groupId>
-	<artifactId>desafio</artifactId>
+	<groupId>com</groupId>
+	<artifactId>votacao</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>desafio</name>
+	<name>Votacao-Api-Rest</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>

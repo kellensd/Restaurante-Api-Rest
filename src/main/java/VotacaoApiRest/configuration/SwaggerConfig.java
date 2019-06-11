@@ -1,4 +1,4 @@
-package VotacaoApiRest.application;
+package VotacaoApiRest.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
