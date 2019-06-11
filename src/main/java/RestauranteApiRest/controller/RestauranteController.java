@@ -18,7 +18,6 @@ import java.util.Map;
 @Validated
 @RestController
 @RequestMapping("/votacoes")
-@Api(tags = {"Votações"})
 public class RestauranteController {
 
     @Autowired
