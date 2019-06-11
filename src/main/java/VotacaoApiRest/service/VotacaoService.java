@@ -1,8 +1,8 @@
-package RestauranteApiRest.service;
+package VotacaoApiRest.service;
 
-import RestauranteApiRest.domain.commands.ComandoVotar;
-import RestauranteApiRest.entity.Restaurante;
-import RestauranteApiRest.utils.Util;
+import VotacaoApiRest.domain.commands.ComandoVotar;
+import VotacaoApiRest.entity.Votacao;
+import VotacaoApiRest.utils.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class RestauranteService implements IRestauranteService  {
+public class VotacaoService implements IVotacaoService {
 
     private Util util = new Util();
 
@@ -24,18 +24,18 @@ public class RestauranteService implements IRestauranteService  {
     private JdbcTemplate jtm;
 
     @Override
-    public List<Restaurante> findAll() {
+    public List<Votacao> findAll() {
         String sql = "SELECT * FROM RESTAURANTE";
-        List<Restaurante> restaurantes = jtm.query(sql, new BeanPropertyRowMapper(Restaurante.class));
-        return restaurantes;
+        List<Votacao> votacoes = jtm.query(sql, new BeanPropertyRowMapper(Votacao.class));
+        return votacoes;
     }
 
     @Override
-    public Restaurante findById(Long id) {
+    public Votacao findById(Long id) {
         String sql = "SELECT * FROM RESTAURANTE WHERE ID=?";
-        Restaurante restaurante = (Restaurante) jtm.queryForObject(sql, new Object[]{id},
-                new BeanPropertyRowMapper(Restaurante.class));
-        return restaurante;
+        Votacao votacao = (Votacao) jtm.queryForObject(sql, new Object[]{id},
+                new BeanPropertyRowMapper(Votacao.class));
+        return votacao;
     }
 
     @Override
@@ -44,19 +44,18 @@ public class RestauranteService implements IRestauranteService  {
         return util.getResultDados(jtm, sql);
     }
 
-    @Override
-    public ResponseEntity<String> insertVotoRestaurante(ComandoVotar votacao) {
+    public ResponseEntity<String> votar(ComandoVotar votacao) {
 
         int countDia = 0, countSemana = 0;
-        List<Restaurante> listRestaurantesBanco = findAll();
-        for (Restaurante restauranteBanco : listRestaurantesBanco) {
-            if (restauranteBanco.getNomeProfissional().equalsIgnoreCase(votacao.getNomeProfissional())
-                    && util.validaSeDatasSaoIguais(restauranteBanco.getDataVotacao(), LocalDate.now())) {
+        List<Votacao> listRestaurantesBanco = findAll();
+        for (Votacao votacaoBanco : listRestaurantesBanco) {
+            if (votacaoBanco.getNomeProfissional().equalsIgnoreCase(votacao.getNomeProfissional())
+                    && util.validaSeDatasSaoIguais(votacaoBanco.getDataVotacao(), LocalDate.now())) {
                 countDia++;
             }
 
-            if (restauranteBanco.getNomeRestaurante().equalsIgnoreCase(votacao.getNomeRestaurante())
-                    && util.validaSeDatasSaoDaMesmaSemana(restauranteBanco.getDataVotacao(), LocalDate.now())) {
+            if (votacaoBanco.getNomeRestaurante().equalsIgnoreCase(votacao.getNomeRestaurante())
+                    && util.validaSeDatasSaoDaMesmaSemana(votacaoBanco.getDataVotacao(), LocalDate.now())) {
                 countSemana++;
             }
         }

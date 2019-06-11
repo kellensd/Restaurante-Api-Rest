@@ -1,4 +1,4 @@
-package RestauranteApiRest.utils;
+package VotacaoApiRest.utils;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

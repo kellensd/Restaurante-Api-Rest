@@ -1,8 +1,8 @@
-package RestauranteApiRest.entity;
+package VotacaoApiRest.entity;
 
 import java.time.LocalDate;
 
-public class Restaurante {
+public class Votacao {
 
     private Long id;
     private String nomeRestaurante;
@@ -11,7 +11,7 @@ public class Restaurante {
     private Integer voto;
     private String descricao;
 
-    public Restaurante() {
+    public Votacao() {
         this.dataVotacao = LocalDate.now();
         this.voto = 1;
     }

@@ -1,4 +1,4 @@
-package RestauranteApiRest.application;
+package VotacaoApiRest.application;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,7 @@ public class SwaggerConfig {
     }
 
     private ApiInfo informacoes() {
-        String appName = "Api Restaurantes";
+        String appName = "Api de Votações";
         return new ApiInfoBuilder()
                 .title(appName)
                 .description(appName)

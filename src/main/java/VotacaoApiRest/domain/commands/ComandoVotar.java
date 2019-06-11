@@ -1,4 +1,4 @@
-package RestauranteApiRest.domain.commands;
+package VotacaoApiRest.domain.commands;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

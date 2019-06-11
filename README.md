@@ -1,4 +1,4 @@
-﻿Este projeto é um serviço REST para consultar e votar em restaurantes.
+﻿Este projeto é um serviço REST para consultar e votar em votacoes.
 
 Abrir o projeto em uma IDE e executar a aplicação.
 Após executar a aplicação você encontra mais detalhes do projeto em:
