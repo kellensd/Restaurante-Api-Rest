@@ -1,4 +1,4 @@
-package RestauranteApiRest.mvc.entity;
+package RestauranteApiRest.entity;
 
 import java.time.LocalDate;
 

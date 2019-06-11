@@ -1,4 +1,4 @@
-package RestauranteApiRest.mvc.utils;
+package RestauranteApiRest.utils;
 
 import org.junit.Assert;
 import org.junit.Test;

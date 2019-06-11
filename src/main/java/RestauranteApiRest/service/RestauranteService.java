@@ -1,7 +1,8 @@
-package RestauranteApiRest.mvc.service;
+package RestauranteApiRest.service;
 
-import RestauranteApiRest.mvc.entity.Restaurante;
-import RestauranteApiRest.mvc.utils.Util;
+import RestauranteApiRest.domain.commands.ComandoVotar;
+import RestauranteApiRest.entity.Restaurante;
+import RestauranteApiRest.utils.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,38 +45,38 @@ public class RestauranteService implements IRestauranteService  {
     }
 
     @Override
-    public ResponseEntity<String> insertVotoRestaurante(String nomeRestaurante, String nomeProfissional, String descricao) {
+    public ResponseEntity<String> insertVotoRestaurante(ComandoVotar votacao) {
 
         int countDia = 0, countSemana = 0;
         List<Restaurante> listRestaurantesBanco = findAll();
         for (Restaurante restauranteBanco : listRestaurantesBanco) {
-            if (restauranteBanco.getNomeProfissional().equalsIgnoreCase(nomeProfissional)
+            if (restauranteBanco.getNomeProfissional().equalsIgnoreCase(votacao.getNomeProfissional())
                     && util.validaSeDatasSaoIguais(restauranteBanco.getDataVotacao(), LocalDate.now())) {
                 countDia++;
             }
 
-            if (restauranteBanco.getNomeRestaurante().equalsIgnoreCase(nomeRestaurante.replace("_", " "))
+            if (restauranteBanco.getNomeRestaurante().equalsIgnoreCase(votacao.getNomeRestaurante())
                     && util.validaSeDatasSaoDaMesmaSemana(restauranteBanco.getDataVotacao(), LocalDate.now())) {
                 countSemana++;
             }
         }
         if (countDia > 0) {
-            return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body("Erro! Você só pode votar em um restaurante por dia!");
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Erro! Você só pode votar em um restaurante por dia!");
         } else if (countSemana > 0) {
-            return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body("Erro! O mesmo restaurante não pode ser escolhido mais de uma vez durante a semana!");
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Erro! O mesmo restaurante não pode ser escolhido mais de uma vez durante a semana!");
         }
 
         String sql = "INSERT INTO RESTAURANTE(nomeRestaurante, nomeProfissional, voto, descricao) VALUES(?, ?, 1, ?); ";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = jtm.getDataSource().getConnection().prepareStatement(sql);
-            preparedStatement.setString(1, nomeRestaurante);
-            preparedStatement.setString(2, nomeProfissional);
-            preparedStatement.setString(3, descricao);
+            preparedStatement.setString(1, votacao.getNomeRestaurante());
+            preparedStatement.setString(2, votacao.getNomeProfissional());
+            preparedStatement.setString(3, votacao.getDescricao());
             preparedStatement.execute();
         } catch (SQLException e) {
             ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao inserir votação: " + e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.OK).body("Voto realizado com sucesso!");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Voto realizado com sucesso!");
     }
 }
