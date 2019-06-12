@@ -1,20 +1,16 @@
 package VotacaoApiRest.domain.commands;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 public class ComandoVotar {
 
-    @NotNull
-    @NotBlank
+    @NotEmpty(message = "Nome do restaurante deve ser preenchido.")
     private String nomeRestaurante;
 
-    @NotNull
-    @NotBlank
+    @NotEmpty(message = "Nome do profissional deve ser preenchido.")
     private String nomeProfissional;
 
-    @NotNull
-    @NotBlank
+    @NotEmpty(message = "Descrição deve ser preenchida.")
     private String descricao;
 
     public String getNomeRestaurante() {
