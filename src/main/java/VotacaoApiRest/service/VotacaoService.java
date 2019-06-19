@@ -3,15 +3,17 @@ package VotacaoApiRest.service;
 import VotacaoApiRest.common.exceptions.DailyRestaurantVoteLimitException;
 import VotacaoApiRest.common.exceptions.UnknownSQLException;
 import VotacaoApiRest.common.exceptions.WeeklyRestaurantVoteLimitException;
+import VotacaoApiRest.common.validations.DataValidation;
 import VotacaoApiRest.domain.commands.ComandoVotar;
 import VotacaoApiRest.entity.Votacao;
-import VotacaoApiRest.utils.Util;
+import VotacaoApiRest.utils.ExtractResultDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -20,8 +22,6 @@ import java.util.Map;
 
 @Service
 public class VotacaoService implements IVotacaoService {
-
-    private Util util = new Util();
 
     @Autowired
     private JdbcTemplate jtm;
@@ -44,7 +44,7 @@ public class VotacaoService implements IVotacaoService {
     @Override
     public List<Map<String, String>> findMaisVotados() {
         String sql = "SELECT nomeRestaurante as restaurante, count(voto) as votos FROM RESTAURANTE group by nomeRestaurante";
-        return util.getResultDados(jtm, sql);
+        return ExtractResultDatabase.getListMapDeDados(jtm, sql);
     }
 
     public ResponseEntity<String> votar(ComandoVotar votacao) {
@@ -53,12 +53,12 @@ public class VotacaoService implements IVotacaoService {
         List<Votacao> listRestaurantesBanco = findAll();
         for (Votacao votacaoBanco : listRestaurantesBanco) {
             if (votacaoBanco.getNomeProfissional().equalsIgnoreCase(votacao.getNomeProfissional())
-                    && util.validaSeDatasSaoIguais(votacaoBanco.getDataVotacao(), LocalDate.now())) {
+                    && DataValidation.isDatasIguais(votacaoBanco.getDataVotacao(), LocalDate.now())){
                 countDia++;
             }
 
             if (votacaoBanco.getNomeRestaurante().equalsIgnoreCase(votacao.getNomeRestaurante())
-                    && util.validaSeDatasSaoDaMesmaSemana(votacaoBanco.getDataVotacao(), LocalDate.now())) {
+                    && DataValidation.isDatasDaMesmaSemana(votacaoBanco.getDataVotacao(), LocalDate.now())) {
                 countSemana++;
             }
         }
