@@ -1,5 +1,8 @@
 package VotacaoApiRest.service;
 
+import VotacaoApiRest.common.exceptions.DailyRestaurantVoteLimitException;
+import VotacaoApiRest.common.exceptions.UnknownSQLException;
+import VotacaoApiRest.common.exceptions.WeeklyRestaurantVoteLimitException;
 import VotacaoApiRest.domain.commands.ComandoVotar;
 import VotacaoApiRest.entity.Votacao;
 import VotacaoApiRest.utils.Util;
@@ -60,9 +63,9 @@ public class VotacaoService implements IVotacaoService {
             }
         }
         if (countDia > 0) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Erro! Você só pode votar em um restaurante por dia!");
+            throw new DailyRestaurantVoteLimitException("Erro! Você só pode votar em um restaurante por dia!");
         } else if (countSemana > 0) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Erro! O mesmo restaurante não pode ser escolhido mais de uma vez durante a semana!");
+            throw new WeeklyRestaurantVoteLimitException("Erro! O mesmo restaurante não pode ser escolhido mais de uma vez durante a semana!");
         }
 
         String sql = "INSERT INTO RESTAURANTE(nomeRestaurante, nomeProfissional, voto, descricao) VALUES(?, ?, 1, ?); ";
@@ -74,7 +77,7 @@ public class VotacaoService implements IVotacaoService {
             preparedStatement.setString(3, votacao.getDescricao());
             preparedStatement.execute();
         } catch (SQLException e) {
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao inserir votação: " + e.getMessage());
+            throw new UnknownSQLException("Erro ao inserir votação: " + e.getMessage());
         }
         return ResponseEntity.status(HttpStatus.CREATED).body("Voto realizado com sucesso!");
     }
