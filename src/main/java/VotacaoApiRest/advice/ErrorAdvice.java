@@ -32,14 +32,14 @@ public class ErrorAdvice {
 
     @ExceptionHandler(DailyRestaurantVoteLimitException.class)
     public ResponseEntity<ErrorRepresentation> notFoundTransactionResponse(DailyRestaurantVoteLimitException ex) {
-        ErrorRepresentation erros = new ErrorRepresentation(HttpStatus.UNPROCESSABLE_ENTITY.value(), TipoErro.VALIDACAO);
+        ErrorRepresentation erros = new ErrorRepresentation(HttpStatus.UNPROCESSABLE_ENTITY.value(), TipoErro.NEGOCIO);
         erros.addErro(ex::getMessage);
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(erros);
     }
 
     @ExceptionHandler(WeeklyRestaurantVoteLimitException.class)
     public ResponseEntity<ErrorRepresentation> notFoundTransactionResponse(WeeklyRestaurantVoteLimitException ex) {
-        ErrorRepresentation erros = new ErrorRepresentation(HttpStatus.UNPROCESSABLE_ENTITY.value(), TipoErro.VALIDACAO);
+        ErrorRepresentation erros = new ErrorRepresentation(HttpStatus.UNPROCESSABLE_ENTITY.value(), TipoErro.NEGOCIO);
         erros.addErro(ex::getMessage);
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(erros);
     }
