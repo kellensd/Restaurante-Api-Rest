@@ -1,7 +1,7 @@
 package VotacaoApiRest.controller;
 
 import VotacaoApiRest.domain.commands.ComandoVotar;
-import VotacaoApiRest.service.VotacaoService;
+import VotacaoApiRest.service.IVotacaoService;
 import VotacaoApiRest.entity.Votacao;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class VotacoesController {
 
     @Autowired
-    private VotacaoService votacaoService;
+    private IVotacaoService votacaoService;
 
     @GetMapping
     @ApiOperation(value = "Exibe lista de todos restaurantes cadastrados.")
