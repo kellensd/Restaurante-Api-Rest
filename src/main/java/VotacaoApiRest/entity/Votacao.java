@@ -1,5 +1,6 @@
 package VotacaoApiRest.entity;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Votacao {
@@ -12,7 +13,8 @@ public class Votacao {
     private String descricao;
 
     public Votacao() {
-        this.dataVotacao = new Date();
+        Calendar calendar = Calendar.getInstance();
+        this.dataVotacao = calendar.getTime();
         this.voto = 1;
     }
 
