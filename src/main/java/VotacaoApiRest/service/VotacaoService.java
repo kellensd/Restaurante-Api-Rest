@@ -7,16 +7,16 @@ import VotacaoApiRest.common.validations.DataValidation;
 import VotacaoApiRest.domain.commands.ComandoVotar;
 import VotacaoApiRest.entity.Votacao;
 import VotacaoApiRest.utils.ExtractResultDatabase;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.apache.commons.lang.time.DateUtils;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -56,12 +56,12 @@ public class VotacaoService implements IVotacaoService {
         List<Votacao> listRestaurantesBanco = findAll();
         for (Votacao votacaoBanco : listRestaurantesBanco) {
             if (votacaoBanco.getNomeProfissional().equalsIgnoreCase(votacao.getNomeProfissional())
-                    && DataValidation.isDatasIguais(votacaoBanco.getDataVotacao(), LocalDate.now())){
+                    && DateUtils.isSameDay(votacaoBanco.getDataVotacao(), new Date())){
                 countDia++;
             }
 
             if (votacaoBanco.getNomeRestaurante().equalsIgnoreCase(votacao.getNomeRestaurante())
-                    && DataValidation.isDatasDaMesmaSemana(votacaoBanco.getDataVotacao(), LocalDate.now())) {
+                    && DataValidation.isDatasDaMesmaSemana(votacaoBanco.getDataVotacao(), new Date())) {
                 countSemana++;
             }
         }

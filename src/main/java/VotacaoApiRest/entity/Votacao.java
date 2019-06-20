@@ -1,18 +1,18 @@
 package VotacaoApiRest.entity;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class Votacao {
 
     private Long id;
     private String nomeRestaurante;
-    private LocalDate dataVotacao;
+    private Date dataVotacao;
     private String nomeProfissional;
     private Integer voto;
     private String descricao;
 
     public Votacao() {
-        this.dataVotacao = LocalDate.now();
+        this.dataVotacao = new Date();
         this.voto = 1;
     }
 
@@ -32,11 +32,11 @@ public class Votacao {
         this.nomeRestaurante = nomeRestaurante;
     }
 
-    public LocalDate getDataVotacao() {
+    public Date getDataVotacao() {
         return dataVotacao;
     }
 
-    public void setDataVotacao(LocalDate dataVotacao) {
+    public void setDataVotacao(Date dataVotacao) {
         this.dataVotacao = dataVotacao;
     }
 
