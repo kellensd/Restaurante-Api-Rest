@@ -23,8 +23,11 @@ import java.util.Map;
 @Service
 public class VotacaoService implements IVotacaoService {
 
-    @Autowired
     private JdbcTemplate jtm;
+
+    public VotacaoService(JdbcTemplate jtm) {
+        this.jtm = jtm;
+    }
 
     @Override
     public List<Votacao> findAll() {
