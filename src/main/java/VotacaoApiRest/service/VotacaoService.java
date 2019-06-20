@@ -31,14 +31,14 @@ public class VotacaoService implements IVotacaoService {
 
     @Override
     public List<Votacao> findAll() {
-        String sql = "SELECT * FROM RESTAURANTE";
+        String sql = "SELECT * FROM VOTACAO";
         List<Votacao> votacoes = jtm.query(sql, new BeanPropertyRowMapper(Votacao.class));
         return votacoes;
     }
 
     @Override
     public Votacao findById(Long id) {
-        String sql = "SELECT * FROM RESTAURANTE WHERE ID=?";
+        String sql = "SELECT * FROM VOTACAO WHERE ID=?";
         Votacao votacao = (Votacao) jtm.queryForObject(sql, new Object[]{id},
                 new BeanPropertyRowMapper(Votacao.class));
         return votacao;
@@ -46,32 +46,25 @@ public class VotacaoService implements IVotacaoService {
 
     @Override
     public List<Map<String, String>> findMaisVotados() {
-        String sql = "SELECT nomeRestaurante as restaurante, count(voto) as votos FROM RESTAURANTE group by nomeRestaurante";
+        String sql = "SELECT nomeRestaurante as restaurante, count(voto) as votos FROM VOTACAO group by nomeRestaurante";
         return ExtractResultDatabase.getListMapDeDados(jtm, sql);
     }
 
     public ResponseEntity<String> votar(ComandoVotar votacao) {
-
-        int countDia = 0, countSemana = 0;
         List<Votacao> listRestaurantesBanco = findAll();
         for (Votacao votacaoBanco : listRestaurantesBanco) {
             if (votacaoBanco.getNomeProfissional().equalsIgnoreCase(votacao.getNomeProfissional())
                     && DateUtils.isSameDay(votacaoBanco.getDataVotacao(), new Date())){
-                countDia++;
+                throw new DailyRestaurantVoteLimitException("Erro! Você só pode votar em um restaurante por dia!");
             }
 
             if (votacaoBanco.getNomeRestaurante().equalsIgnoreCase(votacao.getNomeRestaurante())
                     && DataValidation.isDatasDaMesmaSemana(votacaoBanco.getDataVotacao(), new Date())) {
-                countSemana++;
+                throw new WeeklyRestaurantVoteLimitException("Erro! O mesmo restaurante não pode ser escolhido mais de uma vez durante a semana!");
             }
         }
-        if (countDia > 0) {
-            throw new DailyRestaurantVoteLimitException("Erro! Você só pode votar em um restaurante por dia!");
-        } else if (countSemana > 0) {
-            throw new WeeklyRestaurantVoteLimitException("Erro! O mesmo restaurante não pode ser escolhido mais de uma vez durante a semana!");
-        }
 
-        String sql = "INSERT INTO RESTAURANTE(nomeRestaurante, nomeProfissional, voto, descricao) VALUES(?, ?, 1, ?); ";
+        String sql = "INSERT INTO VOTACAO(nomeRestaurante, nomeProfissional, voto, descricao) VALUES(?, ?, 1, ?); ";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = jtm.getDataSource().getConnection().prepareStatement(sql);
