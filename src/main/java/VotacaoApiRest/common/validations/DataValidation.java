@@ -9,26 +9,22 @@ import java.util.GregorianCalendar;
 
 public class DataValidation {
 
-    public static boolean isDatasDaMesmaSemana(Date dataBanco, Date dataDaVotacaoAtual) {
-        Date primeiroDiaDaSemanaDataBanco = getPrimeiroOuUltimoDiaDaSemana(dataBanco, true);
-        Date ultimoDiaDaSemanaDataBanco = DateUtils.addDays(getPrimeiroOuUltimoDiaDaSemana(dataBanco, false), 1);
+    public static boolean isSameWeek(Date dataBanco, Date dataDaVotacaoAtual) {
+        Date primeiroDiaDaSemanaDataBanco = getDataDaSemana(dataBanco, Calendar.MONDAY);
+        Date ultimoDiaDaSemanaDataBanco = DateUtils.addDays(getDataDaSemana(dataBanco, Calendar.SUNDAY), 1);
 
-        Date primeiroDiaDaSemanaDataDaVotacaoAtual = getPrimeiroOuUltimoDiaDaSemana(dataDaVotacaoAtual, true);
-        Date ultimoDiaDaSemanaDataDaVotacaoAtual = getPrimeiroOuUltimoDiaDaSemana(dataDaVotacaoAtual, false);
+        Date primeiroDiaDaSemanaDataDaVotacaoAtual = getDataDaSemana(dataDaVotacaoAtual, Calendar.MONDAY);
+        Date ultimoDiaDaSemanaDataDaVotacaoAtual = getDataDaSemana(dataDaVotacaoAtual, Calendar.SUNDAY);
 
         return primeiroDiaDaSemanaDataDaVotacaoAtual.compareTo(primeiroDiaDaSemanaDataBanco) >= 0
                 && ultimoDiaDaSemanaDataDaVotacaoAtual.compareTo(ultimoDiaDaSemanaDataBanco) < 0;
     }
 
-    private static Date getPrimeiroOuUltimoDiaDaSemana(Date data, boolean isPrimeiro) {
+    private static Date getDataDaSemana(Date data, int diaDaSemana) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setFirstDayOfWeek(Calendar.MONDAY);
         calendar.setTime(data);
-        if (isPrimeiro) {
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        } else {
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-        }
+        calendar.set(Calendar.DAY_OF_WEEK, diaDaSemana);
         return calendar.getTime();
     }
 

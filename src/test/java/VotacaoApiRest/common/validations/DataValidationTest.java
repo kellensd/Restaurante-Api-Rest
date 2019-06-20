@@ -12,14 +12,14 @@ public class DataValidationTest {
     public void isDatasDaMesmaSemanaTest1() {
         Date dataBanco = DateUtils.addDays(new Date(), 15);
         Date dataDaVotacaoAtual = new Date();
-        Assert.assertFalse("Datas não são da mesma semana.", DataValidation.isDatasDaMesmaSemana(dataBanco, dataDaVotacaoAtual));
+        Assert.assertFalse("Datas não são da mesma semana.", DataValidation.isSameWeek(dataBanco, dataDaVotacaoAtual));
     }
 
     @Test
     public void isDatasDaMesmaSemanaTest2() {
         Date dataBanco = new Date();
         Date dataDaVotacaoAtual = new Date();
-        Assert.assertTrue("Datas são da mesma semana.", DataValidation.isDatasDaMesmaSemana(dataBanco, dataDaVotacaoAtual));
+        Assert.assertTrue("Datas são da mesma semana.", DataValidation.isSameWeek(dataBanco, dataDaVotacaoAtual));
     }
 
     @Test

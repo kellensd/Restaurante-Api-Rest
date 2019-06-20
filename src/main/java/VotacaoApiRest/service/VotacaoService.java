@@ -59,7 +59,7 @@ public class VotacaoService implements IVotacaoService {
             }
 
             if (votacaoBanco.getNomeRestaurante().equalsIgnoreCase(votacao.getNomeRestaurante())
-                    && DataValidation.isDatasDaMesmaSemana(votacaoBanco.getDataVotacao(), new Date())) {
+                    && DataValidation.isSameWeek(votacaoBanco.getDataVotacao(), new Date())) {
                 throw new WeeklyRestaurantVoteLimitException("Erro! O mesmo restaurante não pode ser escolhido mais de uma vez durante a semana!");
             }
         }
