@@ -1,21 +1,19 @@
 package VotacaoApiRest.service;
 
 import VotacaoApiRest.common.exceptions.DailyRestaurantVoteLimitException;
-import VotacaoApiRest.common.exceptions.UnknownSQLException;
 import VotacaoApiRest.common.exceptions.WeeklyRestaurantVoteLimitException;
 import VotacaoApiRest.common.validations.DataValidation;
 import VotacaoApiRest.domain.commands.ComandoVotar;
 import VotacaoApiRest.domain.model.Votacao;
+import VotacaoApiRest.repository.VotacaoRepository;
 import VotacaoApiRest.utils.ExtractResultDatabase;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.apache.commons.lang.time.DateUtils;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -24,9 +22,11 @@ import java.util.Map;
 public class VotacaoService implements IVotacaoService {
 
     private JdbcTemplate jtm;
+    private VotacaoRepository votacaoRepository;
 
-    public VotacaoService(JdbcTemplate jtm) {
+    public VotacaoService(JdbcTemplate jtm, VotacaoRepository votacaoRepository) {
         this.jtm = jtm;
+        this.votacaoRepository = votacaoRepository;
     }
 
     @Override
@@ -64,17 +64,13 @@ public class VotacaoService implements IVotacaoService {
             }
         }
 
-        String sql = "INSERT INTO VOTACAO(nomeRestaurante, nomeProfissional, voto, descricao) VALUES(?, ?, 1, ?); ";
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = jtm.getDataSource().getConnection().prepareStatement(sql);
-            preparedStatement.setString(1, votacao.getNomeRestaurante());
-            preparedStatement.setString(2, votacao.getNomeProfissional());
-            preparedStatement.setString(3, votacao.getDescricao());
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            throw new UnknownSQLException("Erro ao inserir votação: " + e.getMessage());
-        }
+        Votacao votacaoDatabase = new Votacao();
+        votacaoDatabase.setDescricao(votacao.getDescricao());
+        votacaoDatabase.setNomeProfissional(votacao.getNomeProfissional());
+        votacaoDatabase.setNomeRestaurante(votacao.getNomeRestaurante());
+
+        votacaoRepository.save(votacaoDatabase);
+
         return ResponseEntity.status(HttpStatus.CREATED).body("Voto realizado com sucesso!");
     }
 }
