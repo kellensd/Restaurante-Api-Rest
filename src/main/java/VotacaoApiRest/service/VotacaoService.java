@@ -1,5 +1,6 @@
 package VotacaoApiRest.service;
 
+import VotacaoApiRest.common.exceptions.CommunicationException;
 import VotacaoApiRest.common.exceptions.DailyRestaurantVoteLimitException;
 import VotacaoApiRest.common.exceptions.WeeklyRestaurantVoteLimitException;
 import VotacaoApiRest.common.validations.DataValidation;
@@ -8,9 +9,6 @@ import VotacaoApiRest.domain.model.Votacao;
 import VotacaoApiRest.repository.VotacaoRepository;
 import VotacaoApiRest.utils.ExtractResultDatabase;
 import org.apache.commons.lang.time.DateUtils;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -31,16 +29,14 @@ public class VotacaoService implements IVotacaoService {
 
     @Override
     public List<Votacao> findAll() {
-        String sql = "SELECT * FROM VOTACAO";
-        List<Votacao> votacoes = jtm.query(sql, new BeanPropertyRowMapper(Votacao.class));
+        List<Votacao> votacoes = votacaoRepository.findAll();
         return votacoes;
     }
 
     @Override
     public Votacao findById(Long id) {
-        String sql = "SELECT * FROM VOTACAO WHERE ID=?";
-        Votacao votacao = (Votacao) jtm.queryForObject(sql, new Object[]{id},
-                new BeanPropertyRowMapper(Votacao.class));
+        Votacao votacao = votacaoRepository.findById(id)
+                .orElseThrow(() -> new CommunicationException("Votação não encontrada."));
         return votacao;
     }
 
@@ -50,7 +46,7 @@ public class VotacaoService implements IVotacaoService {
         return ExtractResultDatabase.getListMapDeDados(jtm, sql);
     }
 
-    public ResponseEntity<String> votar(ComandoVotar votacao) {
+    public void votar(ComandoVotar votacao) {
         List<Votacao> listRestaurantesBanco = findAll();
         for (Votacao votacaoBanco : listRestaurantesBanco) {
             if (votacaoBanco.getNomeProfissional().equalsIgnoreCase(votacao.getNomeProfissional())
@@ -70,7 +66,5 @@ public class VotacaoService implements IVotacaoService {
         votacaoDatabase.setNomeRestaurante(votacao.getNomeRestaurante());
 
         votacaoRepository.save(votacaoDatabase);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body("Voto realizado com sucesso!");
     }
 }
