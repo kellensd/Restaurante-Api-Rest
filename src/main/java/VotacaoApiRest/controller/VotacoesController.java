@@ -45,6 +45,7 @@ public class VotacoesController {
     @ApiOperation(value = "Votar em um restaurante informando nome do mesmo, nome do profissional e descrição.")
     public ResponseEntity votar(
             @RequestBody @Valid ComandoVotar votacao) {
-        return votacaoService.votar(votacao);
+        votacaoService.votar(votacao);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Voto realizado com sucesso!");
     }
 }
