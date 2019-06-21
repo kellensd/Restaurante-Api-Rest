@@ -1,7 +1,7 @@
 package VotacaoApiRest.service;
 
 import VotacaoApiRest.domain.commands.ComandoVotar;
-import VotacaoApiRest.entity.Votacao;
+import VotacaoApiRest.domain.model.Votacao;
 import org.springframework.http.ResponseEntity;
 import java.util.List;
 import java.util.Map;

@@ -1,15 +1,31 @@
-package VotacaoApiRest.entity;
+package VotacaoApiRest.domain.model;
 
+import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
 
+@Entity
+@Table(name = "VOTACAO")
 public class Votacao {
 
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(name = "nomeRestaurante")
     private String nomeRestaurante;
+
+    @Column(name = "dataVotacao")
     private Date dataVotacao;
+
+    @Column(name = "nomeProfissional")
     private String nomeProfissional;
+
+    @Column(name = "voto")
     private Integer voto;
+
+    @Column(name = "descricao")
     private String descricao;
 
     public Votacao() {

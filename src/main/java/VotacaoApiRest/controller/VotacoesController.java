@@ -2,7 +2,7 @@ package VotacaoApiRest.controller;
 
 import VotacaoApiRest.domain.commands.ComandoVotar;
 import VotacaoApiRest.service.IVotacaoService;
-import VotacaoApiRest.entity.Votacao;
+import VotacaoApiRest.domain.model.Votacao;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

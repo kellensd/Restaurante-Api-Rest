@@ -5,7 +5,7 @@ import VotacaoApiRest.common.exceptions.UnknownSQLException;
 import VotacaoApiRest.common.exceptions.WeeklyRestaurantVoteLimitException;
 import VotacaoApiRest.common.validations.DataValidation;
 import VotacaoApiRest.domain.commands.ComandoVotar;
-import VotacaoApiRest.entity.Votacao;
+import VotacaoApiRest.domain.model.Votacao;
 import VotacaoApiRest.utils.ExtractResultDatabase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
