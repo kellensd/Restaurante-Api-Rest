@@ -1,5 +1,6 @@
 package VotacaoApiRest.advice;
 
+import VotacaoApiRest.common.exceptions.CommunicationException;
 import VotacaoApiRest.common.exceptions.DailyRestaurantVoteLimitException;
 import VotacaoApiRest.common.exceptions.UnknownSQLException;
 import VotacaoApiRest.common.exceptions.WeeklyRestaurantVoteLimitException;
@@ -31,24 +32,31 @@ public class ErrorAdvice {
     }
 
     @ExceptionHandler(DailyRestaurantVoteLimitException.class)
-    public ResponseEntity<ErrorRepresentation> notFoundTransactionResponse(DailyRestaurantVoteLimitException ex) {
+    public ResponseEntity<ErrorRepresentation> dailyRestaurantVoteLimitResponse(DailyRestaurantVoteLimitException ex) {
         ErrorRepresentation erros = new ErrorRepresentation(HttpStatus.UNPROCESSABLE_ENTITY.value(), TipoErro.NEGOCIO);
         erros.addErro(ex::getMessage);
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(erros);
     }
 
     @ExceptionHandler(WeeklyRestaurantVoteLimitException.class)
-    public ResponseEntity<ErrorRepresentation> notFoundTransactionResponse(WeeklyRestaurantVoteLimitException ex) {
+    public ResponseEntity<ErrorRepresentation> weeklyRestaurantVoteLimitResponse(WeeklyRestaurantVoteLimitException ex) {
         ErrorRepresentation erros = new ErrorRepresentation(HttpStatus.UNPROCESSABLE_ENTITY.value(), TipoErro.NEGOCIO);
         erros.addErro(ex::getMessage);
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(erros);
     }
 
     @ExceptionHandler(UnknownSQLException.class)
-    public ResponseEntity<ErrorRepresentation> unknownPLResponse(UnknownSQLException ex) {
+    public ResponseEntity<ErrorRepresentation> unknownSQLResponse(UnknownSQLException ex) {
         ErrorRepresentation erros = new ErrorRepresentation(HttpStatus.BAD_REQUEST.value(), TipoErro.DESCONHECIDO);
         erros.addErro(ex::getMessage);
         return ResponseEntity.badRequest().body(erros);
+    }
+
+    @ExceptionHandler(CommunicationException.class)
+    public ResponseEntity<ErrorRepresentation> communicationResponse(CommunicationException ex) {
+        ErrorRepresentation erros = new ErrorRepresentation(HttpStatus.INTERNAL_SERVER_ERROR.value(), TipoErro.COMUNICACAO);
+        erros.addErro(ex::getMessage);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erros);
     }
 
 }
