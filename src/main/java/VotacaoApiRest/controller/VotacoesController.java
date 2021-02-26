@@ -2,9 +2,8 @@ package VotacaoApiRest.controller;
 
 import VotacaoApiRest.domain.commands.ComandoVotar;
 import VotacaoApiRest.domain.model.Votacao;
-import VotacaoApiRest.service.IVotacaoService;
+import VotacaoApiRest.service.VotacaoServiceImpl;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,8 +18,11 @@ import java.util.Map;
 @RequestMapping("/votacoes")
 public class VotacoesController {
 
-    @Autowired
-    private IVotacaoService votacaoService;
+    private VotacaoServiceImpl votacaoService;
+
+    public VotacoesController(VotacaoServiceImpl votacaoService) {
+        this.votacaoService = votacaoService;
+    }
 
     @GetMapping
     @ApiOperation(value = "Exibe lista de todos restaurantes cadastrados.")
@@ -36,7 +38,7 @@ public class VotacoesController {
 
     @GetMapping(value = "/maisVotados")
     @ApiOperation(value = "Consulta os restaurantes mais votados.")
-    public List<Map<String, String>> listMaisVotados() {
+    public List<Map<String, String>> consultarRestaurantesMaisVotados() {
         return votacaoService.findMaisVotados();
     }
 
@@ -44,8 +46,8 @@ public class VotacoesController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Votar em um restaurante informando nome do mesmo, nome do profissional e descrição.")
     public ResponseEntity votar(
-            @RequestBody @Valid ComandoVotar votacao) {
-        votacaoService.votar(votacao);
+            @RequestBody @Valid ComandoVotar voto) {
+        votacaoService.votar(voto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Voto realizado com sucesso!");
     }
 }
