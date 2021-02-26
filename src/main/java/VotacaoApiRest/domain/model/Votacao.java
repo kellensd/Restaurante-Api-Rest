@@ -10,22 +10,23 @@ public class Votacao {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "VOTACAO_ID_SEQ")
+    @SequenceGenerator(name="VOTACAO_ID_SEQ", sequenceName = "VOTACAO_ID_SEQ", allocationSize = 1)
     private Long id;
 
-    @Column(name = "nomeRestaurante")
+    @Column(name = "NOME_RESTAURANTE")
     private String nomeRestaurante;
 
-    @Column(name = "dataVotacao")
+    @Column(name = "DATA_VOTACAO")
     private Date dataVotacao;
 
-    @Column(name = "nomeProfissional")
+    @Column(name = "NOME_PROFISSIONAL")
     private String nomeProfissional;
 
-    @Column(name = "voto")
+    @Column(name = "VOTO")
     private Integer voto;
 
-    @Column(name = "descricao")
+    @Column(name = "DESCRICAO")
     private String descricao;
 
     public Votacao() {
