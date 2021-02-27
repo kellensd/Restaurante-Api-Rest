@@ -1,7 +1,8 @@
 package VotacaoApiRest.domain.model;
 
+import VotacaoApiRest.domain.commands.ComandoVotar;
+
 import javax.persistence.*;
-import java.util.Calendar;
 import java.util.Date;
 
 @Entity
@@ -11,7 +12,7 @@ public class Votacao {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "VOTACAO_ID_SEQ")
-    @SequenceGenerator(name="VOTACAO_ID_SEQ", sequenceName = "VOTACAO_ID_SEQ", allocationSize = 1)
+    @SequenceGenerator(name="VOTACAO_ID_SEQ", sequenceName = "VOTACAO_ID_SEQ", allocationSize = 1, initialValue = 5)
     private Long id;
 
     @Column(name = "NOME_RESTAURANTE")
@@ -30,9 +31,14 @@ public class Votacao {
     private String descricao;
 
     public Votacao() {
-        Calendar calendar = Calendar.getInstance();
-        this.dataVotacao = calendar.getTime();
+    }
+
+    public Votacao(ComandoVotar voto) {
+        this.dataVotacao = new Date();
         this.voto = 1;
+        this.descricao = voto.getDescricao();
+        this.nomeRestaurante = voto.getNomeRestaurante();
+        this.nomeProfissional = voto.getNomeProfissional();
     }
 
     public Long getId() {
@@ -47,39 +53,19 @@ public class Votacao {
         return nomeRestaurante;
     }
 
-    public void setNomeRestaurante(String nomeRestaurante) {
-        this.nomeRestaurante = nomeRestaurante;
-    }
-
     public Date getDataVotacao() {
         return dataVotacao;
-    }
-
-    public void setDataVotacao(Date dataVotacao) {
-        this.dataVotacao = dataVotacao;
     }
 
     public String getNomeProfissional() {
         return nomeProfissional;
     }
 
-    public void setNomeProfissional(String nomeProfissional) {
-        this.nomeProfissional = nomeProfissional;
-    }
-
     public Integer getVoto() {
         return voto;
     }
 
-    public void setVoto(Integer voto) {
-        this.voto = voto;
-    }
-
     public String getDescricao() {
         return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
     }
 }
