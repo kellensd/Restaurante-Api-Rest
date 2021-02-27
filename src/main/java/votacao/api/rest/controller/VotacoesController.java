@@ -1,8 +1,8 @@
-package VotacaoApiRest.controller;
+package votacao.api.rest.controller;
 
-import VotacaoApiRest.domain.commands.ComandoVotar;
-import VotacaoApiRest.domain.model.Votacao;
-import VotacaoApiRest.service.VotacaoServiceImpl;
+import votacao.api.rest.domain.dto.VotacaoDTO;
+import votacao.api.rest.domain.commands.ComandoVotar;
+import votacao.api.rest.service.VotacaoServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,13 +26,13 @@ public class VotacoesController {
 
     @GetMapping
     @ApiOperation(value = "Exibe lista de todos restaurantes cadastrados.")
-    public List<Votacao> findAll() {
+    public List<VotacaoDTO> findAll() {
         return votacaoService.findAll();
     }
 
     @GetMapping(value = "/{id}")
     @ApiOperation(value = "Consulta dados do restaurante informado por id.")
-    public Votacao findById(@PathVariable Long id) {
+    public VotacaoDTO findById(@PathVariable Long id) {
         return votacaoService.findById(id);
     }
 
