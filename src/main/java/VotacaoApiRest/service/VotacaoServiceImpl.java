@@ -7,9 +7,7 @@ import VotacaoApiRest.common.validations.DataValidation;
 import VotacaoApiRest.domain.commands.ComandoVotar;
 import VotacaoApiRest.domain.model.Votacao;
 import VotacaoApiRest.repository.VotacaoRepository;
-import VotacaoApiRest.utils.ExtractResultDatabase;
 import org.apache.commons.lang.time.DateUtils;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -19,11 +17,9 @@ import java.util.Map;
 @Service
 public class VotacaoServiceImpl implements VotacaoService {
 
-    private JdbcTemplate jtm;
     private VotacaoRepository votacaoRepository;
 
-    public VotacaoServiceImpl(JdbcTemplate jtm, VotacaoRepository votacaoRepository) {
-        this.jtm = jtm;
+    public VotacaoServiceImpl(VotacaoRepository votacaoRepository) {
         this.votacaoRepository = votacaoRepository;
     }
 
@@ -39,9 +35,8 @@ public class VotacaoServiceImpl implements VotacaoService {
     }
 
     @Override
-    public List<Map<String, String>> findMaisVotados() {
-        String sql = "SELECT nomeRestaurante as restaurante, count(voto) as votos FROM VOTACAO group by nomeRestaurante";
-        return ExtractResultDatabase.getListMapDeDados(jtm, sql);
+    public List<Map<String, String>> findRestaurantesVotados() {
+        return votacaoRepository.findRestaurantesVotados();
     }
 
     public void votar(ComandoVotar voto) {
@@ -58,11 +53,6 @@ public class VotacaoServiceImpl implements VotacaoService {
             }
         }
 
-        Votacao votacaoDatabase = new Votacao();
-        votacaoDatabase.setDescricao(voto.getDescricao());
-        votacaoDatabase.setNomeProfissional(voto.getNomeProfissional());
-        votacaoDatabase.setNomeRestaurante(voto.getNomeRestaurante());
-
-        votacaoRepository.save(votacaoDatabase);
+        votacaoRepository.save(new Votacao(voto));
     }
 }
