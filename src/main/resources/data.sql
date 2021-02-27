@@ -10,15 +10,15 @@ PRIMARY KEY (ID));
 CREATE SEQUENCE IF NOT EXISTS VOTACAO_ID_SEQ
   MINVALUE 1
   MAXVALUE 9999999999999999
-  START WITH 1
+  START WITH 5
   INCREMENT BY 1
   CACHE 500;
 
 INSERT INTO VOTACAO(ID, NOME_RESTAURANTE, DATA_VOTACAO, NOME_PROFISSIONAL, VOTO, DESCRICAO)
-VALUES(1, 'Palatus', SYSDATE, 'Maria', 1, 'Teste Auto 1');
+VALUES(1, 'Palatus', TO_CHAR(sysdate-10,'yyyy-mm-dd hh24:mi:ss.FF3'), 'Maria', 1, 'Teste Auto 1');
 INSERT INTO VOTACAO(ID, NOME_RESTAURANTE, DATA_VOTACAO, NOME_PROFISSIONAL, VOTO, DESCRICAO)
-VALUES(2, 'Panoramico', SYSDATE, 'kellen', 1, 'Teste Auto 2');
+VALUES(2, 'Panoramico', TO_CHAR(sysdate-10,'yyyy-mm-dd hh24:mi:ss.FF3'), 'kellen', 1, 'Teste Auto 2');
 INSERT INTO VOTACAO(ID, NOME_RESTAURANTE, DATA_VOTACAO, NOME_PROFISSIONAL, VOTO, DESCRICAO)
-VALUES(3, 'Sabor familia', SYSDATE, 'joao', 1, 'Teste Auto 3');
+VALUES(3, 'Sabor familia', TO_CHAR(sysdate-10,'yyyy-mm-dd hh24:mi:ss.FF3'), 'joao', 1, 'Teste Auto 3');
 INSERT INTO VOTACAO(ID, NOME_RESTAURANTE, DATA_VOTACAO, NOME_PROFISSIONAL, VOTO, DESCRICAO)
-VALUES(4, 'Panoramico', SYSDATE, 'kellen', 1, 'Teste Auto 4');
+VALUES(4, 'Panoramico', TO_CHAR(sysdate-10,'yyyy-mm-dd hh24:mi:ss.FF3'), 'kellen', 1, 'Teste Auto 4');
