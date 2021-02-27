@@ -1,5 +1,6 @@
 package votacao.api.rest.controller;
 
+import io.swagger.annotations.Api;
 import votacao.api.rest.domain.dto.VotacaoDTO;
 import votacao.api.rest.domain.commands.ComandoVotar;
 import votacao.api.rest.service.VotacaoServiceImpl;
@@ -16,6 +17,7 @@ import java.util.Map;
 @Validated
 @RestController
 @RequestMapping("/votacoes")
+@Api(tags = "Votações")
 public class VotacoesController {
 
     private VotacaoServiceImpl votacaoService;
