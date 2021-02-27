@@ -1,4 +1,4 @@
-package VotacaoApiRest.domain.commands;
+package votacao.api.rest.domain.commands;
 
 import javax.validation.constraints.NotEmpty;
 

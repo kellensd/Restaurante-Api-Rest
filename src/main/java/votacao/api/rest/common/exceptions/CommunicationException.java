@@ -1,4 +1,4 @@
-package VotacaoApiRest.common.exceptions;
+package votacao.api.rest.common.exceptions;
 
 public class CommunicationException extends RuntimeException {
     private static final long serialVersionUID = 1L;

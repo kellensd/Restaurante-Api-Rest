@@ -1,6 +1,6 @@
-package VotacaoApiRest.domain.model;
+package votacao.api.rest.domain.model;
 
-import VotacaoApiRest.domain.commands.ComandoVotar;
+import votacao.api.rest.domain.commands.ComandoVotar;
 
 import javax.persistence.*;
 import java.util.Date;

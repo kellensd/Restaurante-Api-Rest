@@ -1,4 +1,4 @@
-package VotacaoApiRest.common.validations;
+package votacao.api.rest.common.validations;
 
 import org.apache.commons.lang.time.DateUtils;
 

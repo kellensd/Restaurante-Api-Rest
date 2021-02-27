@@ -1,4 +1,4 @@
-package VotacaoApiRest.advice;
+package votacao.api.rest.advice;
 
 public class ValidationHeaderError implements VotacaoError {
     private String mensagem;

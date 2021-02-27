@@ -1,6 +1,6 @@
-package VotacaoApiRest.repository;
+package votacao.api.rest.repository;
 
-import VotacaoApiRest.domain.model.Votacao;
+import votacao.api.rest.domain.model.Votacao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

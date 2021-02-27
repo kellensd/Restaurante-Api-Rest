@@ -1,6 +1,6 @@
-package VotacaoApiRest.utils;
+package votacao.api.rest.utils;
 
-import VotacaoApiRest.common.exceptions.UnknownSQLException;
+import votacao.api.rest.common.exceptions.UnknownSQLException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import java.sql.ResultSet;
 import java.sql.SQLException;

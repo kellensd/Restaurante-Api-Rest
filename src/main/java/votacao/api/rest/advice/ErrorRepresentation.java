@@ -1,4 +1,4 @@
-package VotacaoApiRest.advice;
+package votacao.api.rest.advice;
 
 import java.util.ArrayList;
 import java.util.List;
