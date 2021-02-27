@@ -1,9 +1,5 @@
-package VotacaoApiRest.advice;
+package votacao.api.rest.advice;
 
-import VotacaoApiRest.common.exceptions.CommunicationException;
-import VotacaoApiRest.common.exceptions.DailyRestaurantVoteLimitException;
-import VotacaoApiRest.common.exceptions.UnknownSQLException;
-import VotacaoApiRest.common.exceptions.WeeklyRestaurantVoteLimitException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -11,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import votacao.api.rest.common.exceptions.*;
 
 @ControllerAdvice
 public class ErrorAdvice {
@@ -57,6 +54,13 @@ public class ErrorAdvice {
         ErrorRepresentation erros = new ErrorRepresentation(HttpStatus.INTERNAL_SERVER_ERROR.value(), TipoErro.COMUNICACAO);
         erros.addErro(ex::getMessage);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erros);
+    }
+
+    @ExceptionHandler(VotacaoNotFoundException.class)
+    public ResponseEntity<ErrorRepresentation> votacaoNotFoundResponse(VotacaoNotFoundException ex) {
+        ErrorRepresentation erros = new ErrorRepresentation(HttpStatus.NOT_FOUND.value(), TipoErro.VALIDACAO);
+        erros.addErro(ex::getMessage);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erros);
     }
 
 }
