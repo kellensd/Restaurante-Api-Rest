@@ -36,10 +36,10 @@ public class VotacoesController {
         return votacaoService.findById(id);
     }
 
-    @GetMapping(value = "/maisVotados")
-    @ApiOperation(value = "Consulta os restaurantes mais votados.")
-    public List<Map<String, String>> consultarRestaurantesMaisVotados() {
-        return votacaoService.findMaisVotados();
+    @GetMapping(value = "/restaurantesVotados")
+    @ApiOperation(value = "Consulta os restaurantes que tiveram votos.")
+    public List<Map<String, String>> findRestaurantesVotados() {
+        return votacaoService.findRestaurantesVotados();
     }
 
     @PostMapping
